@@ -16,6 +16,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { ListSubheader } from '@mui/material';
 
 const drawerWidth = 240;
 
@@ -55,6 +56,9 @@ export default function User(props) {
       <Toolbar />
       <Divider />
       <List>
+        <ListSubheader component="div" id="nested-list-subheader">
+            Cáncer de mama
+        </ListSubheader>
         {['KI67','HER2','Estrógeno','Progesterona'].map((text, index) => (
           <ListItem onClick={()=>{handleClickListItem(text)}} key={text} disablePadding>
             <ListItemButton>
@@ -68,6 +72,9 @@ export default function User(props) {
       </List>
       <Divider />
       <List>
+      <ListSubheader component="div" id="nested-list-subheader">
+            Cáncer de próstata
+        </ListSubheader>
         {['Geason'].map((text, index) => (
           <ListItem onClick={()=>{handleClickListItem(text)}} key={text} disablePadding>
             <ListItemButton>
