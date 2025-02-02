@@ -1,22 +1,24 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import MailIcon from '@mui/icons-material/Mail';
-import MenuIcon from '@mui/icons-material/Menu';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import { ListSubheader } from '@mui/material';
+import * as React from "react";
+import PropTypes from "prop-types";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import MailIcon from "@mui/icons-material/Mail";
+import MenuIcon from "@mui/icons-material/Menu";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import { Button, ListSubheader } from "@mui/material";
+import { CloudUpload } from "@mui/icons-material";
+import { styled } from '@mui/material/styles';
 
 const drawerWidth = 240;
 
@@ -24,6 +26,8 @@ export default function User(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
+  const [selected, setSelected] = React.useState("KI67");
+  const [image, setImage] = React.useState(null);
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -41,15 +45,12 @@ export default function User(props) {
   };
 
   const handleClickListItem = (type) => {
-    console.log(type);
-    switch(type){
-        case 'Cerrar sesión':
-            props.setLoggin(false);
-            break;
-        default:
-            console.log('no definido')
+    if (type === "Cerrar sesión") {
+      props.setLoggin(false);
     }
-  }
+    setMobileOpen(false)
+    setSelected(type);
+  };
 
   const drawer = (
     <div>
@@ -57,10 +58,16 @@ export default function User(props) {
       <Divider />
       <List>
         <ListSubheader component="div" id="nested-list-subheader">
-            Cáncer de mama
+          Cáncer de mama
         </ListSubheader>
-        {['KI67','HER2','Estrógeno','Progesterona'].map((text, index) => (
-          <ListItem onClick={()=>{handleClickListItem(text)}} key={text} disablePadding>
+        {["KI67", "HER2", "Estrógeno", "Progesterona"].map((text, index) => (
+          <ListItem
+            onClick={() => {
+              handleClickListItem(text);
+            }}
+            key={text}
+            disablePadding
+          >
             <ListItemButton>
               <ListItemIcon>
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -72,11 +79,17 @@ export default function User(props) {
       </List>
       <Divider />
       <List>
-      <ListSubheader component="div" id="nested-list-subheader">
-            Cáncer de próstata
+        <ListSubheader component="div" id="nested-list-subheader">
+          Cáncer de próstata
         </ListSubheader>
-        {['Geason'].map((text, index) => (
-          <ListItem onClick={()=>{handleClickListItem(text)}} key={text} disablePadding>
+        {["Geason"].map((text, index) => (
+          <ListItem
+            onClick={() => {
+              handleClickListItem(text);
+            }}
+            key={text}
+            disablePadding
+          >
             <ListItemButton>
               <ListItemIcon>
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -88,8 +101,14 @@ export default function User(props) {
       </List>
       <Divider />
       <List>
-        {['Cerrar sesión'].map((text, index) => (
-          <ListItem onClick={()=>{handleClickListItem(text)}} key={text} disablePadding>
+        {["Cerrar sesión"].map((text, index) => (
+          <ListItem
+            onClick={() => {
+              handleClickListItem(text);
+            }}
+            key={text}
+            disablePadding
+          >
             <ListItemButton>
               <ListItemIcon>
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -103,10 +122,62 @@ export default function User(props) {
   );
 
   // Remove this const when copying and pasting into your project.
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container =
+    window !== undefined ? () => window().document.body : undefined;
+
+  const mainContainer = (container) => {
+    return (
+      <>
+        <h2>{container}</h2>
+        <div>
+        <Button
+          component="label"
+          role={undefined}
+          variant="contained"
+          tabIndex={-1}
+          startIcon={<CloudUpload />}
+        >
+          Subir imagen
+          <VisuallyHiddenInput
+            type="file"
+            onChange={(event) => handleImageChange(event)}
+            multiple
+          />
+    
+        </Button>
+        </div>
+        <div className="">
+          {image && <img src={image} alt="Selected" style={{ marginTop: '20px', maxWidth: '100%' }} />}
+        </div>
+      </>
+    );
+  };
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImage(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+  });
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -121,7 +192,7 @@ export default function User(props) {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
+            sx={{ mr: 2, display: { sm: "none" } }}
           >
             <MenuIcon />
           </IconButton>
@@ -146,8 +217,11 @@ export default function User(props) {
             keepMounted: true, // Better open performance on mobile.
           }}
           sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            display: { xs: "block", sm: "none" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
           }}
         >
           {drawer}
@@ -155,8 +229,11 @@ export default function User(props) {
         <Drawer
           variant="permanent"
           sx={{
-            display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            display: { xs: "none", sm: "block" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
           }}
           open
         >
@@ -165,39 +242,15 @@ export default function User(props) {
       </Box>
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+        }}
       >
         <Toolbar />
-        <Typography sx={{ marginBottom: 2 }}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-          tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
-          enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
-          imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus.
-          Convallis convallis tellus id interdum velit laoreet id donec ultrices.
-          Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra
-          nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum
-          leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis
-          feugiat vivamus at augue. At augue eget arcu dictum varius duis at
-          consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
-          sapien faucibus et molestie ac.
-        </Typography>
-        <Typography sx={{ marginBottom: 2 }}>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-          eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-          neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
-          tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
-          sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
-          tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
-          gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-          et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
-          tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
+        {mainContainer(selected)}
       </Box>
     </Box>
   );
 }
-
-
