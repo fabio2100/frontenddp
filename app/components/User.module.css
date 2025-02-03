@@ -1,0 +1,22 @@
+.mainContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+.divRow{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+
+@media (max-width: 768px) {
+    .divRow {
+        flex-direction: column;
+    }
+}
+

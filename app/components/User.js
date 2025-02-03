@@ -17,8 +17,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Button, ListSubheader } from "@mui/material";
-import { CloudUpload } from "@mui/icons-material";
+import { CloudUpload, DoubleArrow } from "@mui/icons-material";
 import { styled } from '@mui/material/styles';
+import styles from './User.module.css';
 
 const drawerWidth = 240;
 
@@ -50,6 +51,7 @@ export default function User(props) {
     }
     setMobileOpen(false)
     setSelected(type);
+    setImage(null);
   };
 
   const drawer = (
@@ -127,9 +129,9 @@ export default function User(props) {
 
   const mainContainer = (container) => {
     return (
-      <>
+      <div>
+        <div className={styles.divRow}>
         <h2>{container}</h2>
-        <div>
         <Button
           component="label"
           role={undefined}
@@ -146,10 +148,12 @@ export default function User(props) {
     
         </Button>
         </div>
-        <div className="">
+        <div className={styles.divRow}>
+          {image && <img src={image} alt="Selected" style={{ marginTop: '20px', maxWidth: '100%' }} />}
+          {image && <DoubleArrow/>}
           {image && <img src={image} alt="Selected" style={{ marginTop: '20px', maxWidth: '100%' }} />}
         </div>
-      </>
+      </div>
     );
   };
 
