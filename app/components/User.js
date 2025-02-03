@@ -18,8 +18,8 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Button, ListSubheader } from "@mui/material";
 import { CloudUpload, DoubleArrow } from "@mui/icons-material";
-import { styled } from '@mui/material/styles';
-import styles from './User.module.css';
+import { styled } from "@mui/material/styles";
+import styles from "./User.module.css";
 
 const drawerWidth = 240;
 
@@ -49,7 +49,7 @@ export default function User(props) {
     if (type === "Cerrar sesión") {
       props.setLoggin(false);
     }
-    setMobileOpen(false)
+    setMobileOpen(false);
     setSelected(type);
     setImage(null);
   };
@@ -131,28 +131,42 @@ export default function User(props) {
     return (
       <div>
         <div className={styles.divRow}>
-        <h2>{container}</h2>
-        <Button
-          component="label"
-          role={undefined}
-          variant="contained"
-          tabIndex={-1}
-          startIcon={<CloudUpload />}
-        >
-          Subir imagen
-          <VisuallyHiddenInput
-            type="file"
-            onChange={(event) => handleImageChange(event)}
-            multiple
-          />
-    
-        </Button>
+          <h2>{container}</h2>
+          <Button
+            component="label"
+            role={undefined}
+            variant="contained"
+            tabIndex={-1}
+            startIcon={<CloudUpload />}
+          >
+            Subir imagen
+            <VisuallyHiddenInput
+              type="file"
+              onChange={(event) => handleImageChange(event)}
+              multiple
+            />
+          </Button>
         </div>
         <div className={styles.divRow}>
-          {image && <img src={image} alt="Selected" style={{ marginTop: '20px', maxWidth: '100%' }} />}
-          {image && <DoubleArrow/>}
-          {image && <img src={image} alt="Selected" style={{ marginTop: '20px', maxWidth: '100%' }} />}
+          {image && (
+            <img
+              src={image}
+              alt="Selected"
+              style={{ marginTop: "20px", maxWidth: "100%" }}
+            />
+          )}
+          {image && <DoubleArrow />}
+          {image && (
+            <img
+              src={image}
+              alt="Selected"
+              style={{ marginTop: "20px", maxWidth: "100%" }}
+            />
+          )}
         </div>
+        <div className={styles.divRow}>
+          {image && <Lista />}
+          </div>
       </div>
     );
   };
@@ -168,17 +182,37 @@ export default function User(props) {
     }
   };
 
-  const VisuallyHiddenInput = styled('input')({
-    clip: 'rect(0 0 0 0)',
-    clipPath: 'inset(50%)',
+  const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
     height: 1,
-    overflow: 'hidden',
-    position: 'absolute',
+    overflow: "hidden",
+    position: "absolute",
     bottom: 0,
     left: 0,
-    whiteSpace: 'nowrap',
+    whiteSpace: "nowrap",
     width: 1,
   });
+
+  const Lista = () => {
+    return (
+      <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
+        {[['IA KI67',112], ['IA Total cells',112], ['IA Positive cells',112],['IA Negative cells',112],['IA POSITIVE CELLS',112],['IA POSITIVE CELLS',112],['IA POSITIVE CELLS',112]].map((value) => (
+          <ListItem
+            key={value[0]}
+            disableGutters
+            secondaryAction={
+              <IconButton aria-label="comment">
+                {value[1]}
+              </IconButton>
+            }
+          >
+            <ListItemText primary={`${value[0]}`} />
+          </ListItem>
+        ))}
+      </List>
+    );
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
